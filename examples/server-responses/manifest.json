@@ -1,0 +1,20 @@
+{
+    "latest_version": "2.1.0",
+    "released_at": "2024-01-15T10:30:00Z",
+    "download_url": "https://your-update-server.com/releases/v2.1.0/update.zip",
+    "checksum": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "files": [
+        "src/Core/Application.php",
+        "src/Core/Router.php",
+        "src/Controllers/HomeController.php",
+        "src/Services/ApiService.php",
+        "lib/helpers.php",
+        "templates/base.html",
+        "templates/home.html",
+        "public/assets/css/style.css",
+        "public/assets/js/app.js"
+    ],
+    "changelog": "## v2.1.0 - 2024-01-15\n\n### Yeni özəlliklər\n- API performansı artırıldı\n- Yeni şablon sistemi əlavə edildi\n- Daha yaxşı xəta idarəetməsi\n\n### Düzəlişlər\n- Router cache problemi həll edildi\n- CSS stil xətaları düzəldildi\n\n### Dəyişikliklər\n- PHP 7.4 minimum tələb olunur\n- Köhnə helper funksiyaları silindi",
+    "notes": "Bu yeniləmə mühüm təhlükəsizlik düzəlişləri ehtiva edir.",
+    "signature": "base64_encoded_signature_here"
+}

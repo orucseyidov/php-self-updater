@@ -1,0 +1,15 @@
+{
+    "name": "orucseyidov/php-self-updater",
+    "description": "Framework-agnostic self update library for PHP scripts",
+    "type": "library",
+    "license": "MIT",
+    "require": {
+        "php": ">=7.4"
+    },
+    "autoload": {
+        "psr-4": {
+            "SelfUpdater\\": "src/"
+        }
+    },
+    "minimum-stability": "stable"
+}
