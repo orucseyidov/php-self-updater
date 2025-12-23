@@ -159,6 +159,67 @@ Updater::getChangelog();       // Dəyişiklik qeydləri
 Updater::getLastError();       // Son xəta mesajı
 ```
 
+## 🎨 Update Widget (UI Komponenti)
+
+SaaS layihələri üçün hazır yeniləmə düyməsi və popup.
+
+### Sadə İstifadə
+
+```php
+<?php
+use SelfUpdater\UpdateWidget;
+
+// Yeniləmə düyməsi (həmişə göstər)
+echo UpdateWidget::render([
+    'api_endpoint' => '/api/self-updater.php',
+]);
+```
+
+### Yalnız Yeniləmə Varsa Göstər
+
+```php
+<?php
+// Server yoxlanır, yeniləmə varsa düymə göstərilir
+echo UpdateWidget::renderIfAvailable('/config/updater.php', [
+    'api_endpoint' => '/api/self-updater.php',
+]);
+```
+
+### Xüsusi Düymə İstifadə Edin
+
+```html
+<!-- Öz düyməniz -->
+<button class="my-btn" data-updater-trigger>
+    Sistemi Yenilə
+</button>
+
+<?php
+// Yalnız modal və JS render et
+echo UpdateWidget::renderModal();
+echo UpdateWidget::renderJS(['api_endpoint' => '/api/self-updater.php']);
+?>
+```
+
+### Widget Seçimləri
+
+| Seçim | Varsayılan | Təsvir |
+|-------|------------|--------|
+| `button_text` | "Yeni versiya mövcuddur!" | Düymə mətni |
+| `api_endpoint` | "/api/self-updater.php" | AJAX endpoint |
+| `theme` | "default" | Tema: default/dark |
+| `confirm_message` | "...əminsiniz?" | Təsdiq mesajı |
+| `include_css` | true | CSS daxil et |
+| `include_js` | true | JS daxil et |
+
+### API Endpoint
+
+`api/self-updater.php` faylını public qovluğa kopyalayın:
+
+```php
+// GET: /api/self-updater.php?action=check - Yeniləmə yoxla
+// POST: /api/self-updater.php?action=update - Yenilə
+```
+
 ## Təhlükəsizlik
 
 - **Checksum**: SHA256 ilə fayl bütünlüyü yoxlanılır

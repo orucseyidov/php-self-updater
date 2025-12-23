@@ -45,9 +45,9 @@ try {
         
         // Yeniləməni icra et
         // DİQQƏT: Bu mövcud faylları dəyişdirəcək!
-        // $projectPath = dirname(__DIR__);
-        // Updater::run($projectPath);
-        // echo "\n🎉 Yeniləmə uğurla tamamlandı!\n";
+        $projectPath = dirname(__DIR__);
+        Updater::run($projectPath);
+        echo "\n🎉 Yeniləmə uğurla tamamlandı!\n";
         
     } else {
         echo "\n✓ Ən son versiyanı istifadə edirsiniz.\n";
