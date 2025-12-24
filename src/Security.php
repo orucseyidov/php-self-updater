@@ -37,7 +37,8 @@ class Security
             );
         }
 
-        $actualChecksum = hash_file('sha256', $filePath);
+        $actualChecksum = trim(hash_file('sha256', $filePath));
+        $expectedChecksum = trim($expectedChecksum);
 
         if (strtolower($actualChecksum) !== strtolower($expectedChecksum)) {
             throw new ChecksumException(

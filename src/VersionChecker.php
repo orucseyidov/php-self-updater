@@ -45,6 +45,9 @@ class VersionChecker
     /**
      * Uzaq versiya məlumatlarını serverdən alır
      * 
+     * Channel dəstəyi: JSON-da channel açarları varsa onlardan oxuyur,
+     * yoxdursa root-u production kimi istifadə edir (geriyə uyğunluq).
+     * 
      * @return array Versiya məlumatları
      * @throws DownloadException Serverlə əlaqə qurula bilmədikdə
      */
@@ -72,6 +75,9 @@ class VersionChecker
             );
         }
 
+        // Channel dəstəyi
+        $data = $this->extractChannelData($data);
+
         // Məcburi sahələri yoxla
         if (!isset($data['latest_version'])) {
             throw new DownloadException(
@@ -85,6 +91,9 @@ class VersionChecker
 
     /**
      * Yeniləmə manifestini serverdən alır
+     * 
+     * Channel dəstəyi: JSON-da channel açarları varsa onlardan oxuyur,
+     * yoxdursa root-u production kimi istifadə edir (geriyə uyğunluq).
      * 
      * @return array Manifest məlumatları
      * @throws DownloadException Serverlə əlaqə qurula bilmədikdə
@@ -107,6 +116,9 @@ class VersionChecker
                 "Manifest cavabı düzgün JSON formatında deyil"
             );
         }
+
+        // Channel dəstəyi
+        $data = $this->extractChannelData($data);
 
         // Məcburi sahələri yoxla
         $requiredFields = ['latest_version', 'download_url', 'checksum', 'files'];
@@ -273,6 +285,48 @@ class VersionChecker
         }
 
         return $response;
+    }
+
+    /**
+     * JSON məlumatından channel-a görə məlumat çıxarır
+     * 
+     * Geriyə uyğunluq: Əgər JSON-da channel açarları yoxdursa,
+     * root-u production kimi istifadə edir.
+     * 
+     * Nümunə channel-li JSON:
+     * {
+     *     "development": { "latest_version": "2.1.0", ... },
+     *     "production": { "latest_version": "2.0.0", ... }
+     * }
+     * 
+     * Nümunə köhnə format (geriyə uyğun):
+     * { "latest_version": "2.0.0", ... }
+     * 
+     * @param array $data Server cavabı
+     * @return array Channel-a görə filtrlənmiş məlumat
+     */
+    private function extractChannelData(array $data): array
+    {
+        $channel = $this->config->getChannel();
+
+        // Əgər tələb olunan channel mövcuddursa, onu istifadə et
+        if (isset($data[$channel]) && is_array($data[$channel])) {
+            return $data[$channel];
+        }
+
+        // Əgər 'production' channel mövcuddursa, onu fallback kimi istifadə et
+        if ($channel !== 'production' && isset($data['production']) && is_array($data['production'])) {
+            return $data['production'];
+        }
+
+        // Geriyə uyğunluq: channel açarları yoxdursa, root-u istifadə et
+        // Bu həm köhnə formatı, həm də production-ı əhatə edir
+        if (isset($data['latest_version'])) {
+            return $data;
+        }
+
+        // Əgər heç biri yoxdursa, boş array qaytar (xəta fetchRemoteVersion-da tutulacaq)
+        return $data;
     }
 
     /**

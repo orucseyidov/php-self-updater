@@ -3,13 +3,45 @@
     "description": "Framework-agnostic self update library for PHP scripts",
     "type": "library",
     "license": "MIT",
+    "keywords": [
+        "self-update",
+        "auto-update",
+        "updater",
+        "php",
+        "laravel",
+        "codeigniter",
+        "symfony",
+        "yii"
+    ],
+    "authors": [
+        {
+            "name": "Oruc Seyidov",
+            "email": "contact@example.com"
+        }
+    ],
     "require": {
-        "php": ">=7.4"
+        "php": ">=7.4",
+        "ext-zip": "*",
+        "ext-json": "*"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^9.0"
     },
     "autoload": {
         "psr-4": {
             "SelfUpdater\\": "src/"
         }
     },
-    "minimum-stability": "stable"
+    "extra": {
+        "laravel": {
+            "providers": [
+                "SelfUpdater\\Integrations\\Laravel\\SelfUpdaterServiceProvider"
+            ],
+            "aliases": {
+                "SelfUpdater": "SelfUpdater\\Integrations\\Laravel\\SelfUpdater"
+            }
+        }
+    },
+    "minimum-stability": "stable",
+    "prefer-stable": true
 }

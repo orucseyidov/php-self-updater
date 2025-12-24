@@ -42,6 +42,7 @@ class Config
     private array $defaults = [
         'current_version'           => '1.0.0',
         'update_server_url'         => '',
+        'channel'                   => 'production',  // 'development', 'staging', 'production'
         'version_endpoint'          => '/version.json',
         'update_manifest_endpoint'  => '/manifest.json',
         'update_paths'              => [],
@@ -332,6 +333,16 @@ class Config
     public function shouldVerifySSL(): bool
     {
         return (bool) $this->config['verify_ssl'];
+    }
+
+    /**
+     * Cari channel-ı qaytarır
+     * 
+     * @return string 'development', 'staging', və ya 'production'
+     */
+    public function getChannel(): string
+    {
+        return $this->config['channel'] ?? 'production';
     }
 
     /**

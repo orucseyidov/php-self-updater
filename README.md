@@ -57,6 +57,9 @@ return [
     // Yeniləmə server URL-i
     'update_server_url' => 'https://your-update-server.com',
 
+    // Channel: 'development', 'staging', və ya 'production'
+    'channel' => 'production',
+
     // Versiya endpoint-i
     'version_endpoint' => '/api/version.json',
 
@@ -89,28 +92,55 @@ return [
 
 ## Server Tərəfi
 
-### version.json
+Server JSON faylları iki formatda ola bilər:
 
+### Channel-li Format (tövsiyə olunur)
+
+Eyni faylda birdən çox channel:
+
+**version.json**
 ```json
 {
-    "latest_version": "2.1.0",
-    "released_at": "2024-01-15T10:30:00Z"
+    "development": {
+        "latest_version": "2.1.0",
+        "released_at": "2024-01-20T10:30:00Z"
+    },
+    "production": {
+        "latest_version": "2.0.0",
+        "released_at": "2024-01-15T10:30:00Z"
+    }
 }
 ```
 
-### manifest.json
-
+**manifest.json**
 ```json
 {
-    "latest_version": "2.1.0",
-    "download_url": "https://your-server.com/releases/v2.1.0/update.zip",
-    "checksum": "sha256_checksum_here",
-    "files": [
-        "src/Core/Application.php",
-        "src/Controllers/HomeController.php",
-        "lib/helpers.php"
-    ],
-    "changelog": "## v2.1.0\n- Yeni özəlliklər\n- Xəta düzəlişləri"
+    "development": {
+        "latest_version": "2.1.0",
+        "download_url": "https://your-server.com/releases/v2.1.0/update.zip",
+        "checksum": "sha256_checksum_here",
+        "files": ["src/file.php"],
+        "changelog": "## v2.1.0\n- Yeni özəlliklər"
+    },
+    "production": {
+        "latest_version": "2.0.0",
+        "download_url": "https://your-server.com/releases/v2.0.0/update.zip",
+        "checksum": "sha256_checksum_here",
+        "files": ["src/file.php"],
+        "changelog": "## v2.0.0\n- Stabil versiya"
+    }
+}
+```
+
+### Sadə Format (geriyə uyğun)
+
+Köhnə format da dəstəklənir (production kimi işləyir):
+
+**version.json**
+```json
+{
+    "latest_version": "2.0.0",
+    "released_at": "2024-01-15T10:30:00Z"
 }
 ```
 
